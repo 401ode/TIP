@@ -20,8 +20,27 @@ conn = pypyodbc.connect(
 #    if row is None:
 #        break
 #    print (u"{2} has ID {0} and TIP ID {1}.".format(row.get("ID"), row.get("TIPID"), row.get("ProjectName")))
+df17 = pd.read_sql("SELECT * FROM FY17", conn)
+df18 = pd.read_sql("SELECT * FROM FY18", conn)
+df19 = pd.read_sql("SELECT * FROM FY19", conn)
+df20 = pd.read_sql("SELECT * FROM FY20", conn)
 
-df = pd.read_sql("SELECT ID, TIPID, ProjectName FROM AllProjects", conn)
+# reduce() is a left-fold from python 2.7, but it is no longer implemented in 3.5
+# so I copied the implementation and
+def reduce(function, iterable, initializer=None):
+    it = iter(iterable)
+    if initializer is None:
+        try:
+            initializer = next(it)
+        except StopIteration:
+            raise TypeError('reduce() of empty sequence with no initial value')
+    accum_value = initializer
+    for x in it:
+        accum_value = function(accum_value, x)
+    return accum_value
+
+df = reduce(lambda left, right: pd.merge(left, right, how='outer', on='TIPID'), [df17, df18, df19, df20])
+
 print(df.head());
 # cur.close()
 conn.close()
