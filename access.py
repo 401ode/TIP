@@ -21,6 +21,9 @@ conn = pypyodbc.connect(
 #    if row is None:
 #        break
 #    print (u"{2} has ID {0} and TIP ID {1}.".format(row.get("ID"), row.get("TIPID"), row.get("ProjectName")))
+
+### ALL PROJECTS
+
 df17 = pd.read_sql("SELECT * FROM FY17", conn);
 df18 = pd.read_sql("SELECT * FROM FY18", conn);
 df19 = pd.read_sql("SELECT * FROM FY19", conn);
@@ -46,6 +49,16 @@ df = reduce(lambda left, right: pd.merge(left, right, how='outer', on='TIPID'), 
 df = df.drop('ProjectName', 1)
 # change output path below as necessary
 df.to_csv(r'C:\Users\Nicholas.Tomlin\Documents\GitHub\TIP\CSVs\FY17_25.csv', index=False);
-print(df.head());
+
+### BRIDGE GROUPS
+
+df17 = pd.read_sql("SELECT * FROM FY17_BG", conn);
+df18 = pd.read_sql("SELECT * FROM FY18_BG", conn);
+df19 = pd.read_sql("SELECT * FROM FY19_BG", conn);
+df20 = pd.read_sql("SELECT * FROM FY20_BG", conn);
+df21_25 = pd.read_sql("SELECT * FROM [FY21-25_BG]", conn);
+df = reduce(lambda left, right: pd.merge(left, right, how='outer', on='TIPID'), [df17, df18, df19, df20, df21_25])
+df = df.drop('ProjectName', 1)
+df.to_csv(r'C:\Users\Nicholas.Tomlin\Documents\GitHub\TIP\CSVs\BG17_25.csv', index=False);
 # cur.close()
 conn.close()
