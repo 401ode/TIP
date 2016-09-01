@@ -48,7 +48,7 @@ def reduce(function, iterable, initializer=None):
 df = reduce(lambda left, right: pd.merge(left, right, how='outer', on='TIPID'), [df17, df18, df19, df20, df21_25])
 df = df.drop('ProjectName', 1)
 # change output path below as necessary
-df.to_csv(r'C:\Users\Nicholas.Tomlin\Documents\GitHub\TIP\CSVs\FY17_25.csv', index=False);
+df.to_csv(r"C:\Users\Nicholas.Tomlin\Documents\GitHub\TIP\CSVs By Type\FY17_25.csv", index=False);
 
 ### BRIDGE GROUPS
 
@@ -59,6 +59,6 @@ df20 = pd.read_sql("SELECT * FROM FY20_BG", conn);
 df21_25 = pd.read_sql("SELECT * FROM [FY21-25_BG]", conn);
 df = reduce(lambda left, right: pd.merge(left, right, how='outer', on='TIPID'), [df17, df18, df19, df20, df21_25])
 df = df.drop('ProjectName', 1)
-df.to_csv(r'C:\Users\Nicholas.Tomlin\Documents\GitHub\TIP\CSVs\BG17_25.csv', index=False);
+df.to_csv(r"C:\Users\Nicholas.Tomlin\Documents\GitHub\TIP\CSVs By Type\BG17_25.csv", index=False);
 # cur.close()
 conn.close()
