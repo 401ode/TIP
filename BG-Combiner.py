@@ -14,6 +14,12 @@ conn = pypyodbc.connect(
 
 munis = pd.read_sql("SELECT TIPID, Municipalities FROM IDmunicipalities", conn);
 
+df16 = pd.read_sql("SELECT ID, TIPID, FY16allocation, FY16GasTax, FY16RICAPHIP, FY16RIHMA, FY16RICAPProjects AS RICAPProjects, FY16RICAPFacilities, FY16ProjectCloseouts, FY16IWAYLandSales, FY16GARVEE, FY16TollRevenue, FY16RailwayProgram, FY16HSIP, FY16TAP, FY16NHPP, FY16CMAQ, FY16Planning, FY16STP, FY16NationalFreight, FY16NHTSA, FY16FTA5337 AS FY16FTA, FY16TransitHubBond, FY16TIGER, FY16UnallocatedBonds, FY16other, FY16STBGSA FROM FY16", conn);
+bg16 = pd.read_sql("SELECT ID, TIPID, BridgeGroup, FY16allocation, FY16GasTax, FY16RICAPHIP, FY16RIHMA, FY16RICAPprojects AS RICAPProjects, FY16RICAPFacilities, FY16ProjectCloseouts, FY16IWAYLandSales, FY16GARVEE, FY16TollRevenue, FY16RailwayProgram, FY16HSIP, FY16TAP, FY16NHPP, FY16CMAQ, FY16Planning, FY16STP, FY16NationalFreight, FY16NHTSA, FY16FTA, FY16TransitHubBond, FY16TIGERGrant AS FY16TIGER, FY16UnallocatedBonds FROM FY16_BG", conn);
+df0 = pd.concat([df16, bg16]);
+df = pd.merge(munis, df0, how='outer', on='TIPID');
+df.to_csv(r'C:\Users\Nicholas.Tomlin\Documents\GitHub\TIP\CSVs\FY16.csv', index=False);
+
 df17 = pd.read_sql("SELECT * FROM FY17", conn);
 bg17 = pd.read_sql("SELECT * FROM FY17_BG", conn);
 df1 = pd.concat([df17, bg17]);
